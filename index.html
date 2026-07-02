@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grace Cathedral Church</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --stone:    #F0ECE4;
+    --parchment:#E8E2D6;
+    --ink:      #1C1814;
+    --ash:      #6B6460;
+    --gold:     #9B7D3A;
+    --rose:     #8B4A52;
+    --sky:      #3D5A73;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--stone);
+    color: var(--ink);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(240,236,228,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(155,125,58,0.2);
+  }
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600; letter-spacing: 0.04em;
+    color: var(--gold); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.78rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ash);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid; place-items: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 100%, rgba(155,125,58,0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 50% at 20% 30%, rgba(61,90,115,0.15) 0%, transparent 60%),
+      linear-gradient(160deg, #0E0C0A 0%, #1C1814 50%, #140E0B 100%);
+  }
+  /* Rose window SVG overlay */
+  .rose-window {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(70vw, 70vh); height: min(70vw, 70vh);
+    opacity: 0.06;
+    animation: slowspin 80s linear infinite;
+  }
+  @keyframes slowspin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 2rem;
+    max-width: 780px;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; display: block; width: 40px; height: 1px; background: var(--gold); opacity: 0.5;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 300; line-height: 1.05;
+    color: var(--stone); letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 0.9rem; color: rgba(240,236,228,0.5);
+    letter-spacing: 0.04em; margin-bottom: 3rem;
+  }
+  .hero-cta {
+    display: inline-flex; gap: 1.25rem; flex-wrap: wrap; justify-content: center;
+  }
+  .btn {
+    text-decoration: none; font-size: 0.75rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.85rem 2rem;
+    display: inline-block; transition: all 0.25s;
+  }
+  .btn-gold {
+    background: var(--gold); color: var(--stone);
+    border: 1px solid var(--gold);
+  }
+  .btn-gold:hover { background: transparent; color: var(--gold); }
+  .btn-outline {
+    background: transparent; color: var(--stone);
+    border: 1px solid rgba(240,236,228,0.3);
+  }
+  .btn-outline:hover { border-color: var(--stone); }
+
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(240,236,228,0.3); font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; z-index: 2;
+    animation: bobble 2.5s ease-in-out infinite;
+  }
+  .scroll-hint::after {
+    content: ''; display: block; width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(240,236,228,0.3), transparent);
+  }
+  @keyframes bobble {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── SECTION SHELL ── */
+  section { padding: 6rem 4rem; }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400; line-height: 1.15; color: var(--ink);
+    max-width: 640px; margin-bottom: 1.5rem;
+  }
+  .divider {
+    width: 48px; height: 1px; background: var(--gold); margin-bottom: 2rem;
+  }
+
+  /* ── WELCOME ── */
+  #welcome {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    background: var(--stone);
+  }
+  .welcome-text p { color: var(--ash); margin-bottom: 1.25rem; }
+  .welcome-verse {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; font-style: italic; font-weight: 300;
+    color: var(--rose); line-height: 1.5;
+    padding: 2rem; border-left: 2px solid var(--gold);
+    background: var(--parchment); margin-top: 2rem;
+  }
+  .welcome-verse cite {
+    display: block; font-style: normal; font-family: 'Inter', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-top: 0.75rem;
+  }
+  .stained-glass {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    aspect-ratio: 1 / 1.1;
+  }
+  .glass-panel {
+    border-radius: 4px;
+    position: relative; overflow: hidden;
+  }
+  .glass-panel::before {
+    content: ''; position: absolute; inset: 0;
+    opacity: 0.9;
+  }
+  .g1 { background: linear-gradient(145deg, #3D5A73, #5B7FA0); grid-column: span 2; border-radius: 100px 100px 4px 4px; }
+  .g2 { background: linear-gradient(145deg, #8B4A52, #B5636E); }
+  .g3 { background: linear-gradient(145deg, #9B7D3A, #C4A356); }
+  .g4 { background: linear-gradient(145deg, #5A7A5A, #7BA07B); grid-column: span 2; }
+
+  /* ── SERVICES ── */
+  #services {
+    background: var(--parchment);
+    text-align: center;
+  }
+  #services .section-title, #services .section-label { margin-left: auto; margin-right: auto; }
+  #services .divider { margin: 0 auto 3rem; }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5px; margin-top: 1rem;
+    background: rgba(155,125,58,0.15);
+    border: 1px solid rgba(155,125,58,0.15);
+  }
+  .service-card {
+    background: var(--parchment); padding: 2.5rem 2rem;
+    transition: background 0.2s;
+  }
+  .service-card:hover { background: var(--stone); }
+  .service-icon {
+    font-size: 1.8rem; margin-bottom: 1rem; display: block;
+  }
+  .service-day {
+    font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.5rem;
+  }
+  .service-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 600; color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .service-time { font-size: 0.85rem; color: var(--ash); }
+
+  /* ── MINISTRIES ── */
+  #ministries {
+    background: var(--ink);
+    color: var(--stone);
+  }
+  #ministries .section-title { color: var(--stone); }
+  #ministries .section-label { color: var(--gold); }
+  .ministries-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .ministry-card {
+    padding: 2rem; border: 1px solid rgba(240,236,228,0.08);
+    transition: border-color 0.25s, transform 0.25s;
+    cursor: default;
+  }
+  .ministry-card:hover {
+    border-color: rgba(155,125,58,0.4);
+    transform: translateY(-3px);
+  }
+  .ministry-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 300; color: rgba(155,125,58,0.25);
+    line-height: 1; margin-bottom: 1rem;
+  }
+  .ministry-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; color: var(--stone); margin-bottom: 0.75rem;
+  }
+  .ministry-desc { font-size: 0.85rem; color: rgba(240,236,228,0.5); line-height: 1.8; }
+
+  /* ── EVENTS ── */
+  #events { background: var(--stone); }
+  .events-list { margin-top: 2.5rem; }
+  .event-row {
+    display: grid; grid-template-columns: 80px 1fr auto;
+    gap: 2rem; align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(155,125,58,0.15);
+    transition: background 0.15s;
+  }
+  .event-date-box {
+    text-align: center; padding: 0.75rem;
+    background: var(--parchment);
+    border-top: 3px solid var(--gold);
+  }
+  .event-month {
+    font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .event-day-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 600; color: var(--ink);
+  }
+  .event-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 600; color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .event-meta { font-size: 0.78rem; color: var(--ash); }
+  .event-link {
+    text-decoration: none; font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold);
+    border-bottom: 1px solid rgba(155,125,58,0.3); padding-bottom: 2px;
+    white-space: nowrap; transition: border-color 0.2s;
+  }
+  .event-link:hover { border-color: var(--gold); }
+
+  /* ── GIVE / CTA BAND ── */
+  #give {
+    background: var(--gold);
+    padding: 5rem 4rem;
+    text-align: center;
+    color: var(--stone);
+  }
+  #give .section-label { color: rgba(240,236,228,0.7); }
+  #give .section-title { color: var(--stone); margin: 0 auto 1rem; }
+  #give p { color: rgba(240,236,228,0.8); max-width: 500px; margin: 0 auto 2.5rem; }
+  .btn-light {
+    background: var(--stone); color: var(--gold);
+    border: 1px solid var(--stone);
+  }
+  .btn-light:hover { background: transparent; color: var(--stone); border-color: var(--stone); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0E0C0A; color: rgba(240,236,228,0.4);
+    padding: 3rem 4rem;
+    display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: var(--gold); margin-bottom: 0.5rem;
+  }
+  .footer-addr { font-size: 0.8rem; line-height: 1.8; }
+  .footer-links { display: flex; flex-direction: column; gap: 0.5rem; text-align: right; }
+  .footer-links a {
+    color: rgba(240,236,228,0.4); text-decoration: none;
+    font-size: 0.78rem; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy {
+    grid-column: 1 / -1; border-top: 1px solid rgba(240,236,228,0.07);
+    padding-top: 1.5rem; font-size: 0.72rem; text-align: center;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    #welcome { grid-template-columns: 1fr; gap: 3rem; }
+    .stained-glass { max-width: 340px; }
+    .event-row { grid-template-columns: 60px 1fr; }
+    .event-link { display: none; }
+    footer { grid-template-columns: 1fr; }
+    .footer-links { text-align: left; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rose-window, .scroll-hint { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">Grace Cathedral</a>
+  <ul class="nav-links">
+    <li><a href="#welcome">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#ministries">Ministries</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#give">Give</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Rose Window decoration -->
+  <svg class="rose-window" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="95" stroke="#9B7D3A" stroke-width="1.5"/>
+    <circle cx="100" cy="100" r="70" stroke="#9B7D3A" stroke-width="1"/>
+    <circle cx="100" cy="100" r="45" stroke="#9B7D3A" stroke-width="1"/>
+    <circle cx="100" cy="100" r="20" stroke="#9B7D3A" stroke-width="1"/>
+    <line x1="100" y1="5"  x2="100" y2="195" stroke="#9B7D3A" stroke-width="0.8"/>
+    <line x1="5"  y1="100" x2="195" y2="100" stroke="#9B7D3A" stroke-width="0.8"/>
+    <line x1="33" y1="33"  x2="167" y2="167" stroke="#9B7D3A" stroke-width="0.8"/>
+    <line x1="167" y1="33" x2="33"  y2="167" stroke="#9B7D3A" stroke-width="0.8"/>
+    <line x1="100" y1="5"  x2="100" y2="195" stroke="#9B7D3A" stroke-width="0.8" transform="rotate(22.5,100,100)"/>
+    <line x1="5"  y1="100" x2="195" y2="100" stroke="#9B7D3A" stroke-width="0.8" transform="rotate(22.5,100,100)"/>
+    <circle cx="100" cy="30" r="6" stroke="#9B7D3A" stroke-width="0.8" fill="none"/>
+    <circle cx="100" cy="170" r="6" stroke="#9B7D3A" stroke-width="0.8" fill="none"/>
+    <circle cx="30"  cy="100" r="6" stroke="#9B7D3A" stroke-width="0.8" fill="none"/>
+    <circle cx="170" cy="100" r="6" stroke="#9B7D3A" stroke-width="0.8" fill="none"/>
+    <circle cx="50"  cy="50"  r="6" stroke="#9B7D3A" stroke-width="0.8" fill="none"/>
+    <circle cx="150" cy="50"  r="6" stroke="#9B7D3A" stroke-width="0.8" fill="none"/>
+    <circle cx="50"  cy="150" r="6" stroke="#9B7D3A" stroke-width="0.8" fill="none"/>
+    <circle cx="150" cy="150" r="6" stroke="#9B7D3A" stroke-width="0.8" fill="none"/>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Est. 1887 · A Community of Faith</p>
+    <h1 class="hero-title">Where Every Soul<br>Finds <em>Grace</em></h1>
+    <p class="hero-sub">Come as you are. Leave changed. Sunday worship at 9 AM &amp; 11 AM.</p>
+    <div class="hero-cta">
+      <a href="#welcome" class="btn btn-gold">Our Story</a>
+      <a href="#services" class="btn btn-outline">Plan Your Visit</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- WELCOME -->
+<section id="welcome">
+  <div class="welcome-text">
+    <p class="section-label">Welcome Home</p>
+    <h2 class="section-title">A Cathedral Rooted in Love, Open to All</h2>
+    <div class="divider"></div>
+    <p>Grace Cathedral has been a cornerstone of this community for over a century. We are a vibrant, multigenerational congregation that believes faith is lived — in worship, in service, and in the ordinary moments of everyday life.</p>
+    <p>Whether you are returning after years away, exploring Christianity for the first time, or simply looking for a place to belong, our doors are open and our table is set for you.</p>
+    <blockquote class="welcome-verse">
+      "For I was hungry and you gave me food, I was a stranger and you welcomed me."
+      <cite>Matthew 25:35</cite>
+    </blockquote>
+  </div>
+  <div style="display:flex;justify-content:center;">
+    <div class="stained-glass" style="max-width:400px;width:100%;">
+      <div class="glass-panel g1"></div>
+      <div class="glass-panel g2"></div>
+      <div class="glass-panel g3"></div>
+      <div class="glass-panel g4"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <p class="section-label">Join Us</p>
+  <h2 class="section-title">Weekly Services</h2>
+  <div class="divider"></div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🕯️</span>
+      <p class="service-day">Sunday</p>
+      <p class="service-name">Early Worship</p>
+      <p class="service-time">9:00 AM · Traditional Liturgy</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">✝️</span>
+      <p class="service-day">Sunday</p>
+      <p class="service-name">Morning Celebration</p>
+      <p class="service-time">11:00 AM · Contemporary</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📖</span>
+      <p class="service-day">Wednesday</p>
+      <p class="service-name">Midweek Study</p>
+      <p class="service-time">6:30 PM · Fellowship Hall</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🙏</span>
+      <p class="service-day">Friday</p>
+      <p class="service-name">Evening Prayer</p>
+      <p class="service-time">7:00 PM · Chapel</p>
+    </div>
+  </div>
+</section>
+
+<!-- MINISTRIES -->
+<section id="ministries">
+  <p class="section-label">Get Involved</p>
+  <h2 class="section-title">Ministries That Move the World</h2>
+  <div class="divider" style="background:rgba(155,125,58,0.5)"></div>
+  <div class="ministries-grid">
+    <div class="ministry-card">
+      <div class="ministry-num">01</div>
+      <h3 class="ministry-name">Children & Youth</h3>
+      <p class="ministry-desc">Nurturing young faith through story, song, and safe community. Programs for ages 3 through high school.</p>
+    </div>
+    <div class="ministry-card">
+      <div class="ministry-num">02</div>
+      <h3 class="ministry-name">Music & Worship</h3>
+      <p class="ministry-desc">Our choir and worship band welcome singers and musicians of all skill levels to offer their gifts in praise.</p>
+    </div>
+    <div class="ministry-card">
+      <div class="ministry-num">03</div>
+      <h3 class="ministry-name">Community Outreach</h3>
+      <p class="ministry-desc">Food pantry, housing assistance, and neighborhood partnerships — because faith without works is incomplete.</p>
+    </div>
+    <div class="ministry-card">
+      <div class="ministry-num">04</div>
+      <h3 class="ministry-name">Grief & Healing</h3>
+      <p class="ministry-desc">Confidential support groups and pastoral counseling for those walking through loss, illness, or transition.</p>
+    </div>
+    <div class="ministry-card">
+      <div class="ministry-num">05</div>
+      <h3 class="ministry-name">Marriage & Family</h3>
+      <p class="ministry-desc">Premarital mentoring, family retreats, and couples' enrichment to strengthen the bonds that matter most.</p>
+    </div>
+    <div class="ministry-card">
+      <div class="ministry-num">06</div>
+      <h3 class="ministry-name">Global Missions</h3>
+      <p class="ministry-desc">Partnerships in Kenya, Guatemala, and Southeast Asia — bringing clean water, education, and hope.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <p class="section-label">Upcoming</p>
+  <h2 class="section-title">Mark Your Calendar</h2>
+  <div class="divider"></div>
+  <div class="events-list">
+    <div class="event-row">
+      <div class="event-date-box">
+        <p class="event-month">Jul</p>
+        <p class="event-day-num">6</p>
+      </div>
+      <div>
+        <p class="event-title">Summer Picnic & Baptism Service</p>
+        <p class="event-meta">2:00 PM · Lakeside Park · All are welcome</p>
+      </div>
+      <a href="#" class="event-link">Learn more</a>
+    </div>
+    <div class="event-row">
+      <div class="event-date-box">
+        <p class="event-month">Jul</p>
+        <p class="event-day-num">13</p>
+      </div>
+      <div>
+        <p class="event-title">Vacation Bible School Begins</p>
+        <p class="event-meta">9:00 AM–12:00 PM · Fellowship Hall · Ages 5–12</p>
+      </div>
+      <a href="#" class="event-link">Register</a>
+    </div>
+    <div class="event-row">
+      <div class="event-date-box">
+        <p class="event-month">Jul</p>
+        <p class="event-day-num">20</p>
+      </div>
+      <div>
+        <p class="event-title">Marriage Enrichment Retreat</p>
+        <p class="event-meta">Weekend getaway · Blue Ridge Conference Center</p>
+      </div>
+      <a href="#" class="event-link">Reserve your spot</a>
+    </div>
+    <div class="event-row">
+      <div class="event-date-box">
+        <p class="event-month">Aug</p>
+        <p class="event-day-num">3</p>
+      </div>
+      <div>
+        <p class="event-title">Back-to-School Blessing & Supply Drive</p>
+        <p class="event-meta">10:00 AM · Main Sanctuary · Bring a supply donation</p>
+      </div>
+      <a href="#" class="event-link">Learn more</a>
+    </div>
+  </div>
+</section>
+
+<!-- GIVE -->
+<section id="give">
+  <p class="section-label">Stewardship</p>
+  <h2 class="section-title">Support the Mission</h2>
+  <p>Your generosity funds worship, outreach, and care for our neighbors. Every gift — large or small — is an act of faith.</p>
+  <a href="#" class="btn btn-light">Give Online</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <p class="footer-brand">Grace Cathedral Church</p>
+    <p class="footer-addr">
+      142 Cathedral Square, Maplewood, OH 43210<br>
+      (614) 555-0177 · hello@gracecathedral.org<br>
+      Office Hours: Mon–Fri, 9 AM – 4 PM
+    </p>
+  </div>
+  <div class="footer-links">
+    <a href="#">Sermon Archive</a>
+    <a href="#">Prayer Requests</a>
+    <a href="#">Staff & Leadership</a>
+    <a href="#">Visitor Guide</a>
+    <a href="#">Contact</a>
+  </div>
+  <p class="footer-copy">© 2026 Grace Cathedral Church · All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
